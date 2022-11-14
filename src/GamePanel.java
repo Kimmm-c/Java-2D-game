@@ -69,12 +69,6 @@ public class GamePanel extends JPanel implements Runnable {
         tileM.draw(g2);
         player.draw(g2);
 
-
-        Graphics2D table = (Graphics2D) g;
-        table.setColor(Color.red);
-        table.fillRect(650, 0, tileSize*2, tileSize*3);
-
-        table.dispose();
         g2.dispose(); //dispose this graphics and release any system resources it is using. Purpose is to save memory.
     }
 }

@@ -18,6 +18,7 @@ public class TileManager {
         mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 
         getTileImage();
+        loadMap("resources/room1.txt");
     }
 
     public void getTileImage() {
@@ -38,10 +39,10 @@ public class TileManager {
         }
     }
 
-    public void loadMap() {
+    public void loadMap(String roomName) {
         try {
             // Put file content to buffer to be read.
-            InputStream is = getClass().getResourceAsStream("resources/room1.txt");
+            InputStream is = getClass().getResourceAsStream(roomName);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;
@@ -50,7 +51,21 @@ public class TileManager {
             while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
                 //read the whole line.
                 String line = br.readLine();
+                while (col < gp.maxScreenCol) {
+                    // use white space as delimiter to separate every number on the line.
+                    String numbers[] = line.split(" ");
+                    int num = Integer.parseInt(numbers[col]);
+
+                    mapTileNum[col][row] = num;
+                    col++;
+                }
+
+                if (col == gp.maxScreenCol) {
+                    col = 0;
+                    row++;
+                }
             }
+            br.close();
 
         } catch (Exception e) {
 
@@ -64,7 +79,10 @@ public class TileManager {
         int y = 0;
 
         while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
-            g2.drawImage(tile[0].image, x, y, gp.tileSize, gp.tileSize, null);
+
+            int tileNum = mapTileNum[col][row];
+
+            g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
             col++;
             x += gp.tileSize;
 
