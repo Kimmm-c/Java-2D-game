@@ -8,17 +8,21 @@ public class Character extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandle;
 
+    public final int screenX;
+    public final int screenY;
+
     public Character(GamePanel panel, KeyHandler keyH) {
         this.gamePanel = panel;
         this.keyHandle = keyH;
-
+        screenX = panel.screenWidth/2 - panel.tileSize/2;
+        screenY = panel.screenHeight/2 - panel.tileSize/2;
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
+        worldX = gamePanel.tileSize * 19;
+        worldY = gamePanel.tileSize * 8;
         speed = 3;
         direction = "down";
     }
@@ -42,16 +46,16 @@ public class Character extends Entity {
         if (keyHandle.goUp || keyHandle.goDown || keyHandle.goLeft || keyHandle.goRight) {
             if (keyHandle.goUp == true) {
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             } else if (keyHandle.goDown == true) {
                 direction = "down";
-                y += speed;
+                worldY += speed;
             } else if (keyHandle.goLeft == true) {
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             } else if (keyHandle.goRight == true) {
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
             spriteCounter++;
 
@@ -65,6 +69,7 @@ public class Character extends Entity {
             }
         }
     }
+
     public void draw(Graphics2D g2) {
 //        g2.setColor(Color.white);
 //        g2.fillRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
@@ -106,7 +111,7 @@ public class Character extends Entity {
                 break;
         }
 
-        g2.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 
 }

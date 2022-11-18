@@ -14,6 +14,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandle = new KeyHandler();
 
+    // Map setup
+    public final int maxMapCol = 32;
+    public final int maxMapRow = 24;
+    public final int worldWidth = tileSize * maxMapCol;
+    public final int worldHeight = tileSize * maxMapRow;
+
     //Set FPS
     int FPS = 60;
 
@@ -21,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     TileManager tileM = new TileManager(this);
-    Character player = new Character(this, keyHandle);
+    public Character player = new Character(this, keyHandle);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -39,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Starting a game thread will automatically call the run method. The game loop will be inside this run method.
     @Override
     public void run() {
-        double drawInterval = 1000000000/FPS; //60 frames per second ->0.01666sec/frame.
+        double drawInterval = 1000000000 / FPS; //60 frames per second ->0.01666sec/frame.
 //        double nextDrawTime = System.nanoTime() + drawInterval; //draw new screen after every 0.01666 sec.
 
         while (gameThread != null) {
@@ -49,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
             repaint();
 
             try {
-                Thread.sleep((long) drawInterval/1000000); //delaying the update and draw of new screen.
+                Thread.sleep((long) drawInterval / 1000000); //delaying the update and draw of new screen.
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -58,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-            player.update();
+        player.update();
     }
 
     public void paintComponent(Graphics g) {    //Graphics is a class that provides many functions to draw an object.
