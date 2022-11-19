@@ -14,15 +14,16 @@ public class Character extends Entity {
     public Character(GamePanel panel, KeyHandler keyH) {
         this.gamePanel = panel;
         this.keyHandle = keyH;
-        screenX = panel.screenWidth/2 - panel.tileSize/2;
-        screenY = panel.screenHeight/2 - panel.tileSize/2;
+        screenX = panel.screenWidth / 2 - panel.tileSize / 2;
+        screenY = panel.screenHeight / 2 - panel.tileSize / 2;
+        solidArea = new Rectangle(8, 16, 32, 32);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        worldX = gamePanel.tileSize * 19;
-        worldY = gamePanel.tileSize * 8;
+        worldX = gamePanel.tileSize * 8;
+        worldY = gamePanel.tileSize * 17;
         speed = 3;
         direction = "down";
     }
@@ -44,19 +45,29 @@ public class Character extends Entity {
 
     public void update() {
         if (keyHandle.goUp || keyHandle.goDown || keyHandle.goLeft || keyHandle.goRight) {
-            if (keyHandle.goUp == true) {
+            if (keyHandle.goUp) {
                 direction = "up";
-                worldY -= speed;
-            } else if (keyHandle.goDown == true) {
+            } else if (keyHandle.goDown) {
                 direction = "down";
-                worldY += speed;
-            } else if (keyHandle.goLeft == true) {
+            } else if (keyHandle.goLeft) {
                 direction = "left";
-                worldX -= speed;
-            } else if (keyHandle.goRight == true) {
+            } else if (keyHandle.goRight) {
                 direction = "right";
-                worldX += speed;
             }
+
+            // check for collision
+            collisionOn = false;
+            gamePanel.detector.checkTile(this);
+
+            if(!collisionOn) {
+                switch (direction) {
+                    case "up" -> worldY -= speed;
+                    case "down" -> worldY += speed;
+                    case "left" -> worldX -= speed;
+                    case "right" -> worldX += speed;
+                }
+            }
+
             spriteCounter++;
 
             if (spriteCounter > 12) {

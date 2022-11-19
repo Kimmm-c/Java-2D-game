@@ -29,15 +29,18 @@ public class TileManager {
 
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("resources/wall.png"));
+            tile[1].collision = true;
 
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("resources/water.png"));
+            tile[2].collision = true;
 
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("resources/sand.png"));
 
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("resources/tree.png"));
+            tile[4].collision = true;
 
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(getClass().getResourceAsStream("resources/earth.png"));
@@ -94,7 +97,11 @@ public class TileManager {
             int screenX = mapX - gp.player.worldX + gp.player.screenX;
             int screenY = mapY - gp.player.worldY + gp.player.screenY;
 
-            g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            if (mapX + gp.tileSize > gp.player.worldX - gp.player.screenX && mapX - gp.tileSize < gp.player.worldX + gp.player.screenX
+                    && mapY + gp.tileSize > gp.player.worldY - gp.player.screenY && mapY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            }
+
             mapCol++;
 
             if (mapCol == gp.maxMapCol) {
